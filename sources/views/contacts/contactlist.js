@@ -39,11 +39,14 @@ export default class DataViewContact extends JetView {
 
 		return lay;
 	}
-	init(view) {
+	init(view, url) {
 		let list = view.queryView({view: "list"});
 		list.parse(users);
 		users.waitData.then(function () {
 			let id = list.getFirstId();
+			if (url[1].params.id) {
+				id = url[1].params.id;
+			}
 			list.select(id);
 		});
 	}
