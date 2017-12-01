@@ -2,10 +2,6 @@ export const activities = new webix.DataCollection({
 	url: "http://localhost:8096/api/v1/activities/", save: "rest-> http://localhost:8096/api/v1/activities/"
 });
 
-export function getActivities() {
-	return activities;
-}
-
 export function getActivity(id) {
 	return activities.getItem(id);
 }

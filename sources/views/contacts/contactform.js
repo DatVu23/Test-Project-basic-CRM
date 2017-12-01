@@ -1,5 +1,5 @@
 import {JetView} from "webix-jet";
-import {users, getUsers, setUsers} from "models/users";
+import {users, setUsers} from "models/users";
 import {statuses} from "models/statuses";
 
 export default class ContactForm extends JetView {
@@ -84,7 +84,7 @@ export default class ContactForm extends JetView {
 		if (url[0].params.id) {
 			let id = url[0].params.id;
 			if (id) {
-				this.getRoot().queryView({view: "form"}).setValues(getUsers(id));
+				this.getRoot().queryView({view: "form"}).setValues(users.getItem(id));
 			}
 		}
 	}

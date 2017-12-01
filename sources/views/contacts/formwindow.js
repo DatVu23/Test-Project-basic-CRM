@@ -1,7 +1,7 @@
 import {JetView} from "webix-jet";
-import {getUser} from "models/users";
+import {users} from "models/users";
 import {setActivities, getActivity} from "models/activities";
-import {getTypes} from "models/activitytypes";
+import {activitytypes} from "models/activitytypes";
 
 
 export default class ViewActivityForm extends JetView {
@@ -16,14 +16,14 @@ export default class ViewActivityForm extends JetView {
 					label: "Type",
 					name: "TypeID",
 					options: {
-						data: getTypes(),
+						data: activitytypes,
 						body: {template: "#Value#"}
 					}},
 				{view: "richselect",
 					label: "Contacts",
 					name: "ContactID",
 					options: {
-						data: getUser(),
+						data: users,
 						body: {
 							template: "#FirstName# #LastName# #Email#"
 						}
@@ -61,13 +61,15 @@ export default class ViewActivityForm extends JetView {
 		}
 	}
 	hideWindow() {
+		this.getRoot().queryView({view: "form"}).clear();
+		this.getRoot().queryView({view: "form"}).clearValidation();
 		this.getRoot().hide();
 	}
 	saveData() {
 		if (this.getRoot().getBody().validate()) {
 			const loadData = this.getRoot().getBody().getValues();
 			setActivities(loadData.id, loadData);
-			this.getRoot().hide();
+			this.$scope.hideWindow();
 		}
 	}
 }

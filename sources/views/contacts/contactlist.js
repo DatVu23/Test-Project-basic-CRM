@@ -1,5 +1,5 @@
 import {JetView} from "webix-jet";
-import {users, getUser} from "models/users";
+import {users} from "models/users";
 
 export default class DataViewContact extends JetView {
 	config() {
@@ -41,8 +41,8 @@ export default class DataViewContact extends JetView {
 	}
 	init(view) {
 		let list = view.queryView({view: "list"});
-		list.parse(getUser());
-		getUser().waitData.then(function () {
+		list.parse(users);
+		users.waitData.then(function () {
 			let id = list.getFirstId();
 			list.select(id);
 		});

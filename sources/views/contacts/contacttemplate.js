@@ -102,8 +102,7 @@ export default class DataViewTemplate extends JetView {
 	urlChange(view, url) {
 		if (url[0].params.id) {
 			const id = url[0].params.id;
-			const a = users.waitData;
-			webix.promise.all([a]).then(function () {
+			users.waitData.then(function () {
 				let user = users.getItem(id);
 				view.queryView({id: "userTemplate"}).parse(user);
 			});
