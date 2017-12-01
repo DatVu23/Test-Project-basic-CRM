@@ -1,7 +1,7 @@
 import {JetView} from "webix-jet";
-import {users, getUser, getUsers} from "models/users";
-import {getActivities, setActivities, getActivity} from "models/activities";
-import {getActivitytypes, getTypes} from "models/activitytypes";
+import {getUser} from "models/users";
+import {setActivities, getActivity} from "models/activities";
+import {getTypes} from "models/activitytypes";
 
 
 export default class ViewActivityForm extends JetView {

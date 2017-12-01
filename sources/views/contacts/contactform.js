@@ -71,6 +71,7 @@ export default class ContactForm extends JetView {
 				]}
 			],
 			elementsConfig: {
+				margin: 20,
 				labelWidth: 100
 			},
 			rules: {
@@ -89,11 +90,10 @@ export default class ContactForm extends JetView {
 	}
 	saveContact() {
 		if (this.getRoot().queryView({view: "form"}).validate()) {
-			console.log(this.getRoot());
 			webix.message("Data entered correctly");
-			const loadData = this.getRoot().queryView({view: "form"}).getValues();
-			setUsers(loadData.id, loadData);
-			let id = loadData.id || users.getLastId();
+			const saveData = this.getRoot().queryView({view: "form"}).getValues();
+			setUsers(saveData.id, saveData);
+			let id = saveData.id || users.getLastId();
 			if (id === users.getLastId()) {
 				$$("contactlist").select(id);
 			}

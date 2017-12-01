@@ -14,22 +14,6 @@ export default class DataViewSettings extends JetView {
 			]
 		};
 
-		// let en = {
-		// 	view: "button",
-		// 	value: "en-US",
-		// 	id: " button-en",
-		// 	on: {
-		// 		onClick() {
-		// 			$$("button-en").switchLocale(this.value);
-		// 		}
-		// 	}
-		// };
-
-		// function switchLocale(locale) {
-		// 	webix.i18n.setLocale(locale);
-		// 	recreate_grid();
-		// }
-
 		let lay = {cols: [{rows: [language, {}]}, {}]};
 		return lay;
 	}

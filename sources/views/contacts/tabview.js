@@ -1,6 +1,7 @@
 import {JetView} from "webix-jet";
-import {activities, getActivities, setActivities} from "models/activities";
-import {users, getInfo, getUsers} from "models/users";
+import {getActivities, setActivities} from "models/activities";
+import {getActivitytypes} from "models/activitytypes";
+import {users} from "models/users";
 import ViewActivityForm from "views/contacts/formwindow";
 
 export default class TabView extends JetView {
@@ -34,7 +35,7 @@ export default class TabView extends JetView {
 									{id: "State", header: "", template: "{common.checkbox()}", editor: "checkbox", checkValue: "Close", unCheckValue: "Open", width: 55},
 									{id: "TypeID", header: ["Activity Type", {content: "selectFilter"}], editor: "richselect", width: 200},
 									{id: "DueDate", header: ["Due Data", {content: "textFilter"}], editor: "date", width: 250},
-									{id: "Details", header: ["Details", {content: "textFilter"}], width: 250},
+									{id: "Details", header: ["Details", {content: "textFilter"}], fillspace: true},
 									{id: "edit", template: "<span class='webix_icon fa-edit'></span>", width: 50},
 									{id: "delete", template: "<span class='webix_icon fa-trash'></span>", width: 50}
 								],
@@ -74,24 +75,14 @@ export default class TabView extends JetView {
 		return tabView;
 	}
 	init(view) {
-		this.on(this.app, "contactinfo", (id) => {
-			if (this._ev) {
-				view.queryView({view: "datatable"}).data.detachEvent(this._ev);
-			}
-			this._ev = view.queryView({view: "datatable"}).data.attachEvent("onAfterFilter", function () {
-				this.blockEvent();
-				this.filter("#ContactID#", id, true);
-				this.unblockEvent();
-			});
-
-			$$("activitiesView").data.sync(activities, function () {
-				this.filter(function (item) {
-					return item.ContactID == id;
-				});
-			});
-		});
 		let datatable = view.queryView({view: "datatable"});
 		datatable.parse(getActivities());
+
+		getActivitytypes().then(function (type) {
+			datatable.getColumnConfig("TypeID").collection = type;
+			datatable.refreshColumns();
+		});
+
 		this.ViewActivityForm = this.ui(ViewActivityForm);
 	}
 }

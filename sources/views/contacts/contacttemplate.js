@@ -1,5 +1,5 @@
 import {JetView} from "webix-jet";
-import {users, getUsers} from "models/users";
+import {users} from "models/users";
 import TabView from "views/contacts/tabview";
 import ViewActivityForm from "views/contacts/formwindow";
 
