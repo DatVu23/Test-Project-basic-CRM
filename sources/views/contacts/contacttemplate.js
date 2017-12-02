@@ -1,5 +1,6 @@
 import {JetView} from "webix-jet";
 import {users} from "models/users";
+import {statuses} from "models/statuses";
 import TabView from "views/contacts/tabview";
 import ViewActivityForm from "views/contacts/formwindow";
 
@@ -19,7 +20,6 @@ export default class DataViewTemplate extends JetView {
 				let company = "<span class ='icons webix_icon fa-briefcase'></span>Company</div>";
 				let birthday = "<div class='info_user'><span class ='icons webix_icon fa-calendar'></span>Birthday<br>";
 				let location = "<span class ='icons webix_icon fa-map-marker'></span>Location<br></div>";
-				let status = "<p class='status'>Status</p>";
 
 				if (user.FirstName) {
 					username = `"<h1 class='top-name'>${user.FirstName} ${user.LastName}</h1>"`;
@@ -44,11 +44,16 @@ export default class DataViewTemplate extends JetView {
 				}
 
 				let info = username + photo +
-      email + skype + job + company + birthday + location + status;
+      email + skype + job + company + birthday + location;
 
 				return info;
 			}
 		};
+
+		let status = {
+			view: "template", css: "statustempl", autoheight: true, borderless: true, id: "statusValue", template(item) { return `${item.id}`; }
+		};
+
 
 		const buttonRemove = {
 			view: "button",
@@ -92,8 +97,11 @@ export default class DataViewTemplate extends JetView {
 
 		const layout = {
 			rows: [
-				{cols: [userTemplate, {rows: [buttonRemove, {}]}, {rows: [buttonEdit, {}]}]
-
+				{cols: [
+					{rows: [userTemplate, status]},
+					{rows: [buttonRemove, {}]},
+					{rows: [buttonEdit, {}]}
+				]
 				}, TabView]
 		};
 		return layout;
@@ -104,9 +112,12 @@ export default class DataViewTemplate extends JetView {
 	urlChange(view, url) {
 		if (url[0].params.id) {
 			const id = url[0].params.id;
-			webix([users.waitData]).then(function () {
+			const usersData = users.waitData;
+			const statusesData = statuses.waitData;
+			webix.promise.all([usersData, statusesData]).then(function () {
 				let user = users.getItem(id);
 				view.queryView({id: "userTemplate"}).parse(user);
+				view.queryView({id: "statusValue"}).parse(statuses.getItem(user.StatusID));
 			});
 		}
 	}
