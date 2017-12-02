@@ -6,7 +6,7 @@ import ViewActivityForm from "views/contacts/formwindow";
 
 export default class TabView extends JetView {
 	config() {
-		let buttonAddActivity = {
+		const buttonAddActivity = {
 			view: "button",
 			label: "Add activity",
 			type: "icon",
@@ -20,7 +20,7 @@ export default class TabView extends JetView {
 			}
 		};
 
-		let tabView = {
+		const tabView = {
 			view: "tabview",
 			cells: [
 				{
@@ -84,5 +84,24 @@ export default class TabView extends JetView {
 		});
 
 		this.ViewActivityForm = this.ui(ViewActivityForm);
+	}
+	urlChange(view, url) {
+		if (url[0].params.id) {
+			let id = url[0].params.id;
+			if (this._ev) {
+				view.queryView({view: "datatable"}).data.detachEvent(this._ev);
+			}
+			this._ev = view.queryView({view: "datatable"}).data.attachEvent("onAfterFilter", function () {
+				this.blockEvent();
+				this.filter("#ContactID#", id, true);
+				this.unblockEvent();
+			});
+
+			$$("activitiesView").data.sync(activities, function () {
+				this.filter(function (item) {
+					return item.ContactID == id;
+				});
+			});
+		}
 	}
 }

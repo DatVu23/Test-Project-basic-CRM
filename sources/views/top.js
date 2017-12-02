@@ -2,7 +2,7 @@ import {JetView, plugins} from "webix-jet";
 
 export default class TopView extends JetView {
 	config() {
-		let header = {
+		const header = {
 			id: "header",
 			type: "header",
 			template: "Contacts",
@@ -10,7 +10,7 @@ export default class TopView extends JetView {
 			borderless: true
 		};
 
-		let menu = {
+		const menu = {
 			view: "menu",
 			id: "top:menu",
 			width: 180,
@@ -24,7 +24,7 @@ export default class TopView extends JetView {
 			]
 		};
 
-		let ui = {
+		const ui = {
 			rows: [header, {cols: [
 				{type: "clean",
 					css: "app-left-panel",

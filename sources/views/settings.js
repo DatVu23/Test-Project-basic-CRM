@@ -2,7 +2,7 @@ import {JetView} from "webix-jet";
 
 export default class DataViewSettings extends JetView {
 	config() {
-		let language = {
+		const language = {
 			view: "select",
 			label: "language",
 			width: 400,

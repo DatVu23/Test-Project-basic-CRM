@@ -12,7 +12,7 @@ export default class ViewActivities extends JetView {
 			table.refreshColumns();
 		});
 
-		let toolbar = {
+		const toolbar = {
 			view: "toolbar",
 			elements: [
 				{},
@@ -26,7 +26,7 @@ export default class ViewActivities extends JetView {
 			]
 		};
 
-		let datatable = {
+		const datatable = {
 			view: "datatable",
 			id: "table",
 			select: true,

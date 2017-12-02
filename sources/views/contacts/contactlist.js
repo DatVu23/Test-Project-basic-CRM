@@ -3,7 +3,7 @@ import {users} from "models/users";
 
 export default class DataViewContact extends JetView {
 	config() {
-		let menu = {
+		const menu = {
 			view: "list",
 			id: "contactlist",
 			width: 480,
@@ -22,19 +22,23 @@ export default class DataViewContact extends JetView {
 			}
 		};
 
-		let buttonAdd = {
+		const buttonAdd = {
+			id: "btn",
 			view: "button",
 			type: "icon",
 			icon: "plus",
 			label: "Add contact",
 			autowidth: true,
 			click: () => {
+				let btn = this.getRoot().queryView({view: "button"});
+				btn.define("label", "Add");
+				btn.refresh();
 				this.show("contacts.contactform");
 			}
 		};
 
-		let lay = {
-			rows: [menu, {}, buttonAdd]
+		const lay = {
+			rows: [menu, buttonAdd]
 		};
 
 		return lay;
@@ -44,7 +48,7 @@ export default class DataViewContact extends JetView {
 		list.parse(users);
 		users.waitData.then(function () {
 			let id = list.getFirstId();
-			if (url[1].params.id) {
+			if (url[1] && url[1].params.id) {
 				id = url[1].params.id;
 			}
 			list.select(id);

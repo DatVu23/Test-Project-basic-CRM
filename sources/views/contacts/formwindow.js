@@ -6,7 +6,7 @@ import {activitytypes} from "models/activitytypes";
 
 export default class ViewActivityForm extends JetView {
 	config() {
-		let form = {
+		const form = {
 			view: "form",
 			borderless: true,
 			width: 400,
@@ -41,7 +41,7 @@ export default class ViewActivityForm extends JetView {
 			}
 		};
 
-		let windowPopUp = {
+		const windowPopUp = {
 			view: "window",
 			position: "center",
 			modal: true,

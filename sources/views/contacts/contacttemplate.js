@@ -5,7 +5,7 @@ import ViewActivityForm from "views/contacts/formwindow";
 
 export default class DataViewTemplate extends JetView {
 	config() {
-		let userTemplate = {
+		const userTemplate = {
 			view: "template",
 			borderless: true,
 			id: "userTemplate",
@@ -50,7 +50,7 @@ export default class DataViewTemplate extends JetView {
 			}
 		};
 
-		let buttonRemove = {
+		const buttonRemove = {
 			view: "button",
 			type: "icon",
 			icon: "trash",
@@ -75,7 +75,8 @@ export default class DataViewTemplate extends JetView {
 
 		};
 
-		let buttonEdit = {
+		const buttonEdit = {
+			id: "btnedit",
 			view: "button",
 			label: "edit",
 			type: "icon",
@@ -84,11 +85,12 @@ export default class DataViewTemplate extends JetView {
 			autowidth: true,
 			click: () => {
 				let id = users.getCursor();
+				this.app.callEvent("editButton", []);
 				this.show(`contacts.contactform?id=${id}`);
 			}
 		};
 
-		let layout = {
+		const layout = {
 			rows: [
 				{cols: [userTemplate, {rows: [buttonRemove, {}]}, {rows: [buttonEdit, {}]}]
 
@@ -102,7 +104,7 @@ export default class DataViewTemplate extends JetView {
 	urlChange(view, url) {
 		if (url[0].params.id) {
 			const id = url[0].params.id;
-			users.waitData.then(function () {
+			webix([users.waitData]).then(function () {
 				let user = users.getItem(id);
 				view.queryView({id: "userTemplate"}).parse(user);
 			});
