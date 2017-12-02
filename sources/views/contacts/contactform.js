@@ -61,12 +61,12 @@ export default class ContactForm extends JetView {
 					},
 					{
 						view: "button",
-						id: "btnid",
+						id: "btnAddContact",
 						type: "iconButton",
 						icon: "plus",
 						css: "webix_icon user_button",
 						autowidth: true,
-						label: "Add (*save)",
+						label: "Add",
 						click: () => {
 							this.getRoot().queryView({view: "button"}).define("label", "Edit");
 							this.getRoot().queryView({view: "button"}).refresh();
@@ -85,15 +85,11 @@ export default class ContactForm extends JetView {
 		};
 		return {rows: [userForm, {borderless: true}]};
 	}
-	init() {
-		this.app.attachEvent("editButton", () => {
-			let btn = this.getRoot().queryView({view: "button"});
-			btn.define("label", "Edit");
-			btn.refresh();
-		});
-	}
 	urlChange(view, url) {
 		if (url[0].params.id) {
+			const btnAdd = $$("btnAddContact");
+			btnAdd.define("label", "edit");
+			btnAdd.refresh();
 			let id = url[0].params.id;
 			if (id) {
 				this.getRoot().queryView({view: "form"}).setValues(users.getItem(id));

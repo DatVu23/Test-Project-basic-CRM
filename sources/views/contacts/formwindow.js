@@ -31,7 +31,7 @@ export default class ViewActivityForm extends JetView {
 				{view: "datepicker", name: "DueDate", label: "Date", format: "%d-%m-%Y", stringResult: true},
 				{view: "checkbox", label: "Complited", name: "State", checkValue: "Close", unCheckValue: "Open"},
 				{cols: [
-					{view: "button", value: "Add(Save)", click() { this.$scope.saveData(); }},
+					{view: "button", id: "btnWindow", value: "Add", click() { this.$scope.saveData(); }},
 					{view: "button", value: "cancel", click() { this.$scope.hideWindow(); }}
 				]}
 			],
@@ -54,10 +54,16 @@ export default class ViewActivityForm extends JetView {
 	showWindow(id, param) {
 		this.getRoot().show();
 		if (id && param) {
+			const btnAdd = $$("btnWindow");
+			btnAdd.define("label", "add");
+			btnAdd.refresh();
 			this.getRoot().queryView({view: "form"}).elements.ContactID.setValue(id);
 		}
 		else if (id) {
 			this.getRoot().queryView({view: "form"}).setValues(getActivity(id));
+			const btnAdd = $$("btnWindow");
+			btnAdd.define("label", "edit");
+			btnAdd.refresh();
 		}
 	}
 	hideWindow() {
