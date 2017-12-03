@@ -6,9 +6,11 @@ import ViewActivityForm from "views/contacts/formwindow";
 
 export default class TabView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const buttonAddActivity = {
 			view: "button",
-			label: "Add activity",
+			label: _("Add activity"),
 			type: "icon",
 			icon: "plus",
 			autowidth: true,
@@ -24,7 +26,7 @@ export default class TabView extends JetView {
 			view: "tabview",
 			cells: [
 				{
-					header: "Activities",
+					header: _("Activities"),
 					body: {
 						rows: [
 							{id: "activitiesView",
@@ -33,11 +35,11 @@ export default class TabView extends JetView {
 								minWidth: 900,
 								columns: [
 									{id: "State", header: "", template: "{common.checkbox()}", editor: "checkbox", checkValue: "Close", unCheckValue: "Open"},
-									{id: "TypeID", header: ["Activity Type", {content: "selectFilter"}], editor: "richselect"},
-									{id: "DueDate", header: ["Due Data", {content: "textFilter"}], format: webix.i18n.dateFormatStr, editor: "date"},
-									{id: "Details", header: ["Details", {content: "textFilter"}], fillspace: true},
-									{id: "edit", template: "<span class='webix_icon fa-edit'></span>"},
-									{id: "delete", template: "<span class='webix_icon fa-trash'></span>"}
+									{id: "TypeID", header: [_("Activity Type"), {content: "selectFilter"}], editor: "richselect"},
+									{id: "DueDate", header: [_("Due date"), {content: "textFilter"}], format: webix.i18n.dateFormatStr, editor: "date"},
+									{id: "Details", header: [_("Details"), {content: "textFilter"}], fillspace: true},
+									{id: "edit", header: "edit", template: "<span class='webix_icon fa-edit'></span>"},
+									{id: "delete", header: "delete", template: "<span class='webix_icon fa-trash'></span>"}
 								],
 								onClick: {
 									"fa-trash": (ev, id) => {
@@ -53,14 +55,14 @@ export default class TabView extends JetView {
 					}
 				},
 				{
-					header: "Files",
+					header: _("Files"),
 					body: {
 						rows: [
 							{
 								view: "list",
 								id: "listOfPhotos",
 								template: "Uploader Files",
-								width: 900
+								minWidth: 900
 							},
 							{
 								view: "uploader",
@@ -96,7 +98,6 @@ export default class TabView extends JetView {
 				this.filter("#ContactID#", id, true);
 				this.unblockEvent();
 			});
-
 			let dtable = $$("activitiesView");
 			dtable.getFilter("TypeID").value = "";
 			dtable.getFilter("Details").value = "";

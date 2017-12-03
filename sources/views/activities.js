@@ -6,11 +6,7 @@ import ViewActivityForm from "views/contacts/formwindow";
 
 export default class ViewActivities extends JetView {
 	config() {
-		getActivityTypes().then(function (state) {
-			let table = $$("table");
-			table.getColumnConfig("TypeID").collection = state;
-			table.refreshColumns();
-		});
+		const _ = this.app.getService("locale")._;
 
 		const toolbar = {
 			view: "toolbar",
@@ -21,19 +17,19 @@ export default class ViewActivities extends JetView {
 					id: "filterDate",
 					name: "filterDateName",
 					options: [
-						{id: "All", value: "All"},
-						{id: "Overdue", value: "Overdue"},
-						{id: "Today", value: "Today"},
-						{id: "Tomorrow", value: "Tomorrow"},
-						{id: "This week", value: "This week"},
-						{id: "This month", value: "This month"}
+						{id: "All", value: _("All")},
+						{id: "Overdue", value: _("Overdue")},
+						{id: "Today", value: _("Today")},
+						{id: "Tomorrow", value: _("Tomorrow")},
+						{id: "This week", value: _("This week")},
+						{id: "This month", value: _("This month")}
 					],
 					click: () => this.filterTable()
 				},
 				{},
 				{
 					view: "button",
-					value: "Add activity",
+					value: _("Add activity"),
 					autowidth: true,
 					align: "right",
 					click: () => this.ViewActivityForm.showWindow()
@@ -50,12 +46,12 @@ export default class ViewActivities extends JetView {
 			editaction: "dbclick",
 			columns: [
 				{id: "State", header: "", template: "{common.checkbox()}", editor: "checkbox", checkValue: "Close", unCheckValue: "Open"},
-				{id: "TypeID", header: ["Activity Type", {content: "selectFilter"}], editor: "richselect"},
-				{id: "DueDate", header: ["Due Data", {content: "textFilter"}], format: webix.i18n.dateFormatStr, editor: "date", fillspace: true},
-				{id: "Details", header: ["Details", {content: "textFilter"}], fillspace: true},
-				{id: "ContactID", header: ["Contact", {content: "selectFilter"}], fillspace: true},
-				{id: "edit", template: "<span class='webix_icon fa-edit'></span>"},
-				{id: "delete", template: "<span class='webix_icon fa-trash'></span>"}
+				{id: "TypeID", header: [_("Activity Type"), {content: "selectFilter"}], editor: "richselect"},
+				{id: "DueDate", header: [_("Due date"), {content: "textFilter"}], format: webix.i18n.dateFormatStr, editor: "date", fillspace: true},
+				{id: "Details", header: [_("Details"), {content: "textFilter"}], fillspace: true},
+				{id: "ContactID", header: [_("Contact"), {content: "selectFilter"}], fillspace: true},
+				{id: "edit", header: _("edit"), template: "<span class='webix_icon fa-edit'></span>"},
+				{id: "delete", header: _("delete"), template: "<span class='webix_icon fa-trash'></span>"}
 			],
 			onClick: {
 				"fa-trash": (ev, id) => {
@@ -75,6 +71,12 @@ export default class ViewActivities extends JetView {
 		getInfo().then(function (obj) {
 			datatable.getColumnConfig("ContactID").collection = obj;
 			datatable.refreshColumns();
+		});
+
+		getActivityTypes().then(function (state) {
+			let table = $$("table");
+			table.getColumnConfig("TypeID").collection = state;
+			table.refreshColumns();
 		});
 
 		this.ViewActivityForm = this.ui(ViewActivityForm);

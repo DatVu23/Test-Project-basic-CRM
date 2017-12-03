@@ -5,20 +5,22 @@ import {setStatuses} from "models/statuses";
 
 export default class ViewActivityForm extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const form = {
 			view: "form",
 			borderless: true,
 			width: 400,
 			elements: [
 				{view: "richselect",
-					label: "Value",
+					label: _("Value"),
 					name: "Value",
 					options: {
 						data: activitytypes,
 						body: {template: "#Value#"}
 					}},
 				{view: "richselect",
-					label: "Icon",
+					label: _("Icon"),
 					name: "Icon",
 					options: {
 						data: activitytypes,
@@ -26,10 +28,10 @@ export default class ViewActivityForm extends JetView {
 							template: "#Icon#"
 						}
 					}},
-				{view: "checkbox", label: "Complited", name: "State", checkValue: "Close", unCheckValue: "Open"},
+				{view: "checkbox", label: _("Complited"), name: "State", checkValue: "Close", unCheckValue: "Open"},
 				{cols: [
-					{view: "button", id: "btnAddActivity", value: "Add", click() { this.$scope.saveData(); }},
-					{view: "button", value: "cancel", click() { this.$scope.hideWindow(); }}
+					{view: "button", id: "btnAddActivity", value: _("Add"), click() { this.$scope.saveData(); }},
+					{view: "button", value: _("cancel"), click() { this.$scope.hideWindow(); }}
 				]}
 			],
 			rules: {
@@ -43,7 +45,7 @@ export default class ViewActivityForm extends JetView {
 			id: "activityPopUp",
 			position: "center",
 			modal: true,
-			head: "Add(*edit)",
+			head: _("Add"),
 			body: form
 		};
 
@@ -59,7 +61,7 @@ export default class ViewActivityForm extends JetView {
 			window.define("label", "edit");
 		}
 		else {
-			btnAdd.define("label", "add");
+			btnAdd.define("label", _("add"));
 			window.define("label", "add");
 		}
 		btnAdd.refresh();

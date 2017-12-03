@@ -33,7 +33,7 @@ export default class SettingsView extends JetView {
 			view: "tabview",
 			cells: [
 				{
-					header: _("Activity Types"),
+					header: _("Activity Type"),
 					body: {
 						rows: [
 							{id: "activitytypes",
@@ -127,26 +127,6 @@ export default class SettingsView extends JetView {
 
 		let datatableTypes = $$("activitytypes");
 		datatableTypes.parse(activitytypes);
-
-		getActivityTypes().then(function (value) {
-			datatableTypes.getColumnConfig("Value").collection = value;
-			datatableTypes.refreshColumns();
-		});
-
-		getTypesIcon().then(function (icon) {
-			datatableTypes.getColumnConfig("Icon").collection = icon;
-			datatableTypes.refreshColumns();
-		});
-
-		getInfo().then(function (value) {
-			statusesTable.getColumnConfig("Value").collection = value;
-			statusesTable.refreshColumns();
-		});
-
-		getStatusesIcon().then(function (icon) {
-			statusesTable.getColumnConfig("Icon").collection = icon;
-			statusesTable.refreshColumns();
-		});
 
 		this.ViewActivityForm = this.ui(ViewActivityForm);
 		this.ViewStatusesForm = this.ui(ViewStatusesForm);

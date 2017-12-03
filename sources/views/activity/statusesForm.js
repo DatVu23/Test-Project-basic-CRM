@@ -6,20 +6,22 @@ import {users, setUsers} from "models/users";
 
 export default class ViewStatusesForm extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const form = {
 			view: "form",
 			borderless: true,
 			width: 400,
 			elements: [
 				{view: "richselect",
-					label: "Value",
+					label: _("Value"),
 					name: "Value",
 					options: {
 						data: users,
 						body: {template: "#FirstName#"}
 					}},
 				{view: "richselect",
-					label: "Icon",
+					label: _("Icon"),
 					name: "Icon",
 					options: {
 						data: statuses,
@@ -29,8 +31,8 @@ export default class ViewStatusesForm extends JetView {
 					}},
 				{view: "checkbox", label: "Complited", name: "State", checkValue: "Close", unCheckValue: "Open"},
 				{cols: [
-					{view: "button", id: "btnAddStatus", value: "Add(Save)", click() { this.$scope.saveData(); }},
-					{view: "button", value: "cancel", click() { this.$scope.hideWindow(); }}
+					{view: "button", id: "btnAddStatus", value: _("Add"), click() { this.$scope.saveData(); }},
+					{view: "button", value: _("cancel"), click() { this.$scope.hideWindow(); }}
 				]}
 			],
 			rules: {

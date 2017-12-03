@@ -6,6 +6,8 @@ import ViewActivityForm from "views/contacts/formwindow";
 
 export default class DataViewTemplate extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const userTemplate = {
 			view: "template",
 			borderless: true,
@@ -59,7 +61,7 @@ export default class DataViewTemplate extends JetView {
 			view: "button",
 			type: "icon",
 			icon: "trash",
-			label: "delete",
+			label: _("delete"),
 			autoheight: true,
 			autowidth: true,
 			click: () => {
@@ -83,7 +85,7 @@ export default class DataViewTemplate extends JetView {
 		const buttonEdit = {
 			id: "btnedit",
 			view: "button",
-			label: "edit",
+			label: _("edit"),
 			type: "icon",
 			icon: "edit",
 			autoheight: true,

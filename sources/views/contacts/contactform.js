@@ -4,17 +4,47 @@ import {statuses} from "models/statuses";
 
 export default class ContactForm extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
+		const buttonCancel = {
+			view: "button",
+			type: "iconButton",
+			icon: "close",
+			css: "webix_icon user_button",
+			autowidth: true,
+			label: _("cancel"),
+			click() {
+				let id = users.getCursor();
+				this.$scope.show(`contacts.contacttemplate?id=${id}`);
+			}
+		};
+
+		const buttonAdd = {
+			view: "button",
+			id: "btnAddContact",
+			type: "iconButton",
+			icon: "plus",
+			css: "webix_icon user_button",
+			autowidth: true,
+			label: _("Add"),
+			click: () => {
+				this.getRoot().queryView({view: "button"}).define("label", "Edit");
+				this.getRoot().queryView({view: "button"}).refresh();
+				this.saveContact();
+			}
+		};
+
 		const userForm = {
 			view: "form",
 			borderless: true,
 			elements: [
 				{cols: [
 					{rows: [
-						{view: "text", label: "First Name", name: "FirstName"},
-						{view: "text", label: "Last Name", name: "LastName"},
-						{view: "datepicker", label: "Joining date", name: "StartDate", format: "%d-%m-%Y", stringResult: true},
+						{view: "text", label: _("First Name"), name: "FirstName"},
+						{view: "text", label: _("Last Name"), name: "LastName"},
+						{view: "datepicker", label: _("Joining date"), name: "StartDate", format: "%d-%m-%Y", stringResult: true},
 						{view: "richselect",
-							label: "Status",
+							label: _("Status"),
 							name: "StatusID",
 							options: {
 								data: statuses,
@@ -23,16 +53,16 @@ export default class ContactForm extends JetView {
 								}
 							}
 						},
-						{view: "text", label: "Job", name: "Job"},
-						{view: "text", label: "Company", name: "Company"},
-						{view: "text", label: "Website", name: "Website"},
-						{view: "text", label: "Address", name: "Address"}
+						{view: "text", label: _("Job"), name: "Job"},
+						{view: "text", label: _("Company"), name: "Company"},
+						{view: "text", label: _("Website"), name: "Website"},
+						{view: "text", label: _("Address"), name: "Address"}
 					]},
 					{rows: [
-						{view: "text", label: "Email", name: "Email"},
-						{view: "text", label: "Skype", name: "Skype"},
-						{view: "text", label: "Phone", name: "Phone"},
-						{view: "datepicker", label: "Birthday", name: "Birthday", format: webix.i18n.dateFormatStr, stringResult: true},
+						{view: "text", label: _("Email"), name: "Email"},
+						{view: "text", label: _("Skype"), name: "Skype"},
+						{view: "text", label: _("Phone"), name: "Phone"},
+						{view: "datepicker", label: _("Birthday"), name: "Birthday", format: webix.i18n.dateFormatStr, stringResult: true},
 						{template: function userinfo(user) {
 							let photo = "<img src='/sources/images/mail.png'; class='box'>";
 							if (user.Photo) {
@@ -40,44 +70,20 @@ export default class ContactForm extends JetView {
 							}
 							return photo;
 						},
-						height: 400
+						minheight: 400
 						}
 					]}
 				]},
 				{},
 				{cols: [
 					{},
-					{
-						view: "button",
-						type: "iconButton",
-						icon: "close",
-						css: "webix_icon user_button",
-						autowidth: true,
-						label: "Cancel",
-						click() {
-							let id = users.getCursor();
-							this.$scope.show(`contacts.contacttemplate?id=${id}`);
-						}
-					},
-					{
-						view: "button",
-						id: "btnAddContact",
-						type: "iconButton",
-						icon: "plus",
-						css: "webix_icon user_button",
-						autowidth: true,
-						label: "Add (*save)",
-						click: () => {
-							this.getRoot().queryView({view: "button"}).define("label", "Edit");
-							this.getRoot().queryView({view: "button"}).refresh();
-							this.saveContact();
-						}
-					}
+					buttonCancel,
+					buttonAdd
 				]}
 			],
 			elementsConfig: {
 				margin: 20,
-				labelWidth: 100
+				labelWidth: 150
 			},
 			rules: {
 				StatusID: webix.rules.isNotEmpty,
@@ -90,14 +96,14 @@ export default class ContactForm extends JetView {
 	init() {
 		this.app.attachEvent("editButton", () => {
 			let btn = this.getRoot().queryView({view: "button"});
-			btn.define("label", "Edit");
+			btn.define("label", _("edit"));
 			btn.refresh();
 		});
 	}
 	urlChange(view, url) {
 		if (url[0].params.id) {
 			const btnAdd = $$("btnAddContact");
-			btnAdd.define("label", "edit");
+			btnAdd.define("label", _("edit"));
 			btnAdd.refresh();
 			let id = url[0].params.id;
 			if (id) {

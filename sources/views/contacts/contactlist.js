@@ -3,8 +3,10 @@ import {users} from "models/users";
 
 export default class DataViewContact extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const filter = {
-			view: "text", id: "filterlist", label: "Filter", labelWidth: 50
+			view: "text", id: "filterlist", label: _("Filter"), labelWidth: 80
 		};
 
 		const menu = {
@@ -22,8 +24,20 @@ export default class DataViewContact extends JetView {
 				onAfterSelect: (id) => {
 					users.setCursor(id);
 					this.show(`contacts.contacttemplate?id=${id}`);
+					// $$("filterlist").filter("");
 				}
 			}
+		};
+
+		const container = {
+			rows: [
+				{view: "toolbar",
+					elements: [
+						filter
+					]
+				},
+				menu
+			]
 		};
 
 		const buttonAdd = {
@@ -31,7 +45,7 @@ export default class DataViewContact extends JetView {
 			view: "button",
 			type: "icon",
 			icon: "plus",
-			label: "Add contact",
+			label: _("Add contact"),
 			autowidth: true,
 			click: () => {
 				let btn = this.getRoot().queryView({view: "button"});
@@ -43,7 +57,7 @@ export default class DataViewContact extends JetView {
 
 
 		const lay = {
-			rows: [filter, menu, buttonAdd]
+			rows: [container, buttonAdd]
 		};
 
 		return lay;
