@@ -97,6 +97,12 @@ export default class TabView extends JetView {
 				this.unblockEvent();
 			});
 
+			let dtable = $$("activitiesView");
+			dtable.getFilter("TypeID").value = "";
+			dtable.getFilter("Details").value = "";
+			dtable.getFilter("DueDate").value = "";
+			dtable.filterByAll();
+
 			$$("activitiesView").data.sync(activities, function () {
 				this.filter(function (item) {
 					return item.ContactID == id;
