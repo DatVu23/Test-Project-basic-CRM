@@ -63,6 +63,7 @@ export default class ViewActivityForm extends JetView {
 		}
 		else if (id) {
 			this.getRoot().queryView({view: "form"}).setValues(activities.getItem(id));
+			this.getRoot().queryView({name: "ContactID"}).disable();
 			btnAdd.define("label", "edit");
 			// window.define("head", "edit");
 		}
