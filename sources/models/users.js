@@ -1,13 +1,6 @@
 export const users = new webix.DataCollection({
 	url: "http://localhost:8096/api/v1/contacts/", save: "rest-> http://localhost:8096/api/v1/contacts/"
 });
-export function getUsers(id) {
-	return users.getItem(id);
-}
-
-export function getUser() {
-	return users;
-}
 
 export function getInfo() {
 	return users.waitData.then(webix.bind(function () {

@@ -4,7 +4,7 @@ export default class TopView extends JetView {
 	config() {
 		const _ = this.app.getService("locale")._;
 
-		let header = {
+		const header = {
 			id: "header",
 			type: "header",
 			template: "Contacts",
@@ -26,7 +26,7 @@ export default class TopView extends JetView {
 			]
 		};
 
-		let ui = {
+		const ui = {
 			rows: [header, {cols: [
 				{type: "clean",
 					css: "app-left-panel",

@@ -1,11 +1,12 @@
 import {JetView} from "webix-jet";
-import {activities, getActivities, setActivities} from "models/activities";
-import {users, getInfo, getUsers} from "models/users";
+import {activities, setActivities} from "models/activities";
+import {getActivityTypes} from "models/activitytypes";
+import {users} from "models/users";
 import ViewActivityForm from "views/contacts/formwindow";
 
 export default class TabView extends JetView {
 	config() {
-		let buttonAddActivity = {
+		const buttonAddActivity = {
 			view: "button",
 			label: "Add activity",
 			type: "icon",
@@ -19,7 +20,7 @@ export default class TabView extends JetView {
 			}
 		};
 
-		let tabView = {
+		const tabView = {
 			view: "tabview",
 			cells: [
 				{
@@ -31,16 +32,16 @@ export default class TabView extends JetView {
 								minHeight: 250,
 								minWidth: 900,
 								columns: [
-									{id: "State", header: "", template: "{common.checkbox()}", editor: "checkbox", checkValue: "Close", unCheckValue: "Open", width: 55},
-									{id: "TypeID", header: ["Activity Type", {content: "selectFilter"}], editor: "richselect", width: 200},
-									{id: "DueDate", header: ["Due Data", {content: "textFilter"}], editor: "date", width: 250},
-									{id: "Details", header: ["Details", {content: "textFilter"}], width: 250},
-									{id: "edit", template: "<span class='webix_icon fa-edit'></span>", width: 50},
-									{id: "delete", template: "<span class='webix_icon fa-trash'></span>", width: 50}
+									{id: "State", header: "", template: "{common.checkbox()}", editor: "checkbox", checkValue: "Close", unCheckValue: "Open"},
+									{id: "TypeID", header: ["Activity Type", {content: "selectFilter"}], editor: "richselect"},
+									{id: "DueDate", header: ["Due Data", {content: "textFilter"}], editor: "date"},
+									{id: "Details", header: ["Details", {content: "textFilter"}], fillspace: true},
+									{id: "edit", template: "<span class='webix_icon fa-edit'></span>"},
+									{id: "delete", template: "<span class='webix_icon fa-trash'></span>"}
 								],
 								onClick: {
 									"fa-trash": (ev, id) => {
-										getActivities().remove(id);
+										activities.remove(id);
 									},
 									"fa-edit": (ev, id) => {
 										this.ViewActivityForm.showWindow(id);
@@ -74,7 +75,19 @@ export default class TabView extends JetView {
 		return tabView;
 	}
 	init(view) {
-		this.on(this.app, "contactinfo", (id) => {
+		let datatable = view.queryView({view: "datatable"});
+		datatable.parse(activities);
+
+		getActivityTypes().then(function (type) {
+			datatable.getColumnConfig("TypeID").collection = type;
+			datatable.refreshColumns();
+		});
+
+		this.ViewActivityForm = this.ui(ViewActivityForm);
+	}
+	urlChange(view, url) {
+		if (url[0].params.id) {
+			let id = url[0].params.id;
 			if (this._ev) {
 				view.queryView({view: "datatable"}).data.detachEvent(this._ev);
 			}
@@ -89,9 +102,6 @@ export default class TabView extends JetView {
 					return item.ContactID == id;
 				});
 			});
-		});
-		let datatable = view.queryView({view: "datatable"});
-		datatable.parse(getActivities());
-		this.ViewActivityForm = this.ui(ViewActivityForm);
+		}
 	}
 }

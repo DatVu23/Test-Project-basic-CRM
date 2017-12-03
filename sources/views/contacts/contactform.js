@@ -1,5 +1,5 @@
 import {JetView} from "webix-jet";
-import {users, getUsers, setUsers} from "models/users";
+import {users, setUsers} from "models/users";
 import {statuses} from "models/statuses";
 
 export default class ContactForm extends JetView {
@@ -61,16 +61,22 @@ export default class ContactForm extends JetView {
 					},
 					{
 						view: "button",
+						id: "btnAddContact",
 						type: "iconButton",
 						icon: "plus",
 						css: "webix_icon user_button",
 						autowidth: true,
 						label: "Add (*save)",
-						click() { this.$scope.saveContact(); }
+						click: () => {
+							this.getRoot().queryView({view: "button"}).define("label", "Edit");
+							this.getRoot().queryView({view: "button"}).refresh();
+							this.saveContact();
+						}
 					}
 				]}
 			],
 			elementsConfig: {
+				margin: 20,
 				labelWidth: 100
 			},
 			rules: {
@@ -79,21 +85,30 @@ export default class ContactForm extends JetView {
 		};
 		return {rows: [userForm, {borderless: true}]};
 	}
+	init() {
+		this.app.attachEvent("editButton", () => {
+			let btn = this.getRoot().queryView({view: "button"});
+			btn.define("label", "Edit");
+			btn.refresh();
+		});
+	}
 	urlChange(view, url) {
 		if (url[0].params.id) {
+			const btnAdd = $$("btnAddContact");
+			btnAdd.define("label", "edit");
+			btnAdd.refresh();
 			let id = url[0].params.id;
 			if (id) {
-				this.getRoot().queryView({view: "form"}).setValues(getUsers(id));
+				this.getRoot().queryView({view: "form"}).setValues(users.getItem(id));
 			}
 		}
 	}
 	saveContact() {
 		if (this.getRoot().queryView({view: "form"}).validate()) {
-			console.log(this.getRoot());
 			webix.message("Data entered correctly");
-			const loadData = this.getRoot().queryView({view: "form"}).getValues();
-			setUsers(loadData.id, loadData);
-			let id = loadData.id || users.getLastId();
+			const saveData = this.getRoot().queryView({view: "form"}).getValues();
+			setUsers(saveData.id, saveData);
+			let id = saveData.id || users.getLastId();
 			if (id === users.getLastId()) {
 				$$("contactlist").select(id);
 			}
