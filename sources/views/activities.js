@@ -14,20 +14,21 @@ export default class ViewActivities extends JetView {
 
 		const toolbar = {
 			view: "toolbar",
+			id: "toolbar",
 			elements: [
 				{
 					view: "segmented",
+					id: "filterDate",
+					name: "filterDateName",
 					options: [
-						{id: "all", value: "All"},
-						{id: "overdue", value: "Overdue"},
-						{id: "today", value: "Today"},
-						{id: "tomorrow", value: "Tomorrow"},
-						{id: "this week", value: "This week"},
-						{id: "this month", value: "This month"}
+						{id: "All", value: "All"},
+						{id: "Overdue", value: "Overdue"},
+						{id: "Today", value: "Today"},
+						{id: "Tomorrow", value: "Tomorrow"},
+						{id: "This week", value: "This week"},
+						{id: "This month", value: "This month"}
 					],
-					click: () => {
-
-					}
+					click: () => this.filterTable()
 				},
 				{},
 				{
@@ -40,6 +41,7 @@ export default class ViewActivities extends JetView {
 			]
 		};
 
+
 		const datatable = {
 			view: "datatable",
 			id: "table",
@@ -49,7 +51,7 @@ export default class ViewActivities extends JetView {
 			columns: [
 				{id: "State", header: "", template: "{common.checkbox()}", editor: "checkbox", checkValue: "Close", unCheckValue: "Open"},
 				{id: "TypeID", header: ["Activity Type", {content: "selectFilter"}], editor: "richselect"},
-				{id: "DueDate", header: ["Due Data", {content: "textFilter"}], editor: "date"},
+				{id: "DueDate", header: ["Due Data", {content: "textFilter"}], format: webix.i18n.dateFormatStr, editor: "date", fillspace: true},
 				{id: "Details", header: ["Details", {content: "textFilter"}], fillspace: true},
 				{id: "ContactID", header: ["Contact", {content: "selectFilter"}], fillspace: true},
 				{id: "edit", template: "<span class='webix_icon fa-edit'></span>"},
@@ -57,7 +59,7 @@ export default class ViewActivities extends JetView {
 			],
 			onClick: {
 				"fa-trash": (ev, id) => {
-					activities().remove(id);
+					activities.remove(id);
 				},
 				"fa-edit": (ev, id) => {
 					this.ViewActivityForm.showWindow(id);
@@ -76,5 +78,57 @@ export default class ViewActivities extends JetView {
 		});
 
 		this.ViewActivityForm = this.ui(ViewActivityForm);
+	}
+
+	filterTable() {
+		const value = this.getRoot().queryView({name: "filterDateName"}).getValue();
+		const table = this.getRoot().queryView({view: "datatable"});
+		let currDate = new Date();
+		let currDatePart = webix.Date.datePart(currDate);
+
+		switch (value) {
+			case "All" : {
+				table.parse(activities);
+				break;
+			}
+			case "Overdue" : {
+				table.filter(obj => obj.DueDate < currDate);
+				break;
+			}
+			case "Completed": {
+				table.filter(obj => obj.State === "Close");
+				break;
+			}
+			case "Today": {
+				table.filter((obj) => {
+					if (webix.Date.equal(obj.DueDate, currDatePart)) {
+						return obj;
+					}
+				});
+				break;
+			}
+			case "Tomorrow": {
+				table.filter(obj => obj.DueDate.getDay() === currDate.getDay() + 1 &&
+				obj.DueDate.getYear() === currDate.getYear());
+				break;
+			}
+			case "This week": {
+				table.filter((obj) => {
+					if (webix.Date.equal(webix.Date.weekStart(obj.DueDate), webix.Date.weekStart(currDate))) {
+						return obj;
+					}
+				});
+				break;
+			}
+			case "This month": {
+				table.filter(obj => obj.DueDate.getMonth() === currDate.getMonth() &&
+				obj.DueDate.getYear() === currDate.getYear());
+				break;
+			}
+			default: {
+				table.parse(activities);
+				break;
+			}
+		}
 	}
 }

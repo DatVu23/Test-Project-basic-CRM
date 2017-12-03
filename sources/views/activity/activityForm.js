@@ -40,6 +40,7 @@ export default class ViewActivityForm extends JetView {
 
 		const windowPopUp = {
 			view: "window",
+			id: "activityPopUp",
 			position: "center",
 			modal: true,
 			head: "Add(*edit)",
@@ -50,17 +51,19 @@ export default class ViewActivityForm extends JetView {
 	}
 	showWindow(id) {
 		this.getRoot().show();
+		const btnAdd = $$("btnAddActivity");
+		const window = $$("activityPopUp");
 		if (id) {
 			this.getRoot().queryView({view: "form"}).setValues(activitytypes.getItem(id));
-			const btnAdd = $$("btnAddActivity");
 			btnAdd.define("label", "edit");
-			btnAdd.refresh();
+			window.define("label", "edit");
 		}
 		else {
-			const btnAdd = $$("btnAddActivity");
 			btnAdd.define("label", "add");
-			btnAdd.refresh();
+			window.define("label", "add");
 		}
+		btnAdd.refresh();
+		// window.refresh();
 	}
 	hideWindow() {
 		this.getRoot().queryView({view: "form"}).clear();

@@ -32,7 +32,7 @@ export default class ContactForm extends JetView {
 						{view: "text", label: "Email", name: "Email"},
 						{view: "text", label: "Skype", name: "Skype"},
 						{view: "text", label: "Phone", name: "Phone"},
-						{view: "datepicker", label: "Birthday", name: "Birthday", format: "%d-%m-%Y", stringResult: true},
+						{view: "datepicker", label: "Birthday", name: "Birthday", format: webix.i18n.dateFormatStr, stringResult: true},
 						{template: function userinfo(user) {
 							let photo = "<img src='/sources/images/mail.png'; class='box'>";
 							if (user.Photo) {
@@ -80,7 +80,9 @@ export default class ContactForm extends JetView {
 				labelWidth: 100
 			},
 			rules: {
-				StatusID: webix.rules.isNotEmpty
+				StatusID: webix.rules.isNotEmpty,
+				FirstName: webix.rules.isNotEmpty,
+				LastName: webix.rules.isNotEmpty
 			}
 		};
 		return {rows: [userForm, {borderless: true}]};

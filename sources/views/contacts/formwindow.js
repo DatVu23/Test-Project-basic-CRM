@@ -28,10 +28,10 @@ export default class ViewActivityForm extends JetView {
 							template: "#FirstName# #LastName# #Email#"
 						}
 					}},
-				{view: "datepicker", name: "DueDate", label: "Date", format: "%d-%m-%Y", stringResult: true},
+				{view: "datepicker", name: "DueDate", label: "Date", format: "%d-%m-%Y", timepicker: false, stringResult: true},
 				{view: "checkbox", label: "Complited", name: "State", checkValue: "Close", unCheckValue: "Open"},
 				{cols: [
-					{view: "button", id: "btnWindow", value: "Add(Save)", click() { this.$scope.saveData(); }},
+					{view: "button", name: "btnWindow", value: "Add(Save)", click() { this.$scope.saveData(); }},
 					{view: "button", value: "cancel", click() { this.$scope.hideWindow(); }}
 				]}
 			],
@@ -43,9 +43,10 @@ export default class ViewActivityForm extends JetView {
 
 		const windowPopUp = {
 			view: "window",
+			name: "window",
 			position: "center",
 			modal: true,
-			head: "Add(*edit)activity",
+			head: "Add activity",
 			body: form
 		};
 
@@ -53,18 +54,20 @@ export default class ViewActivityForm extends JetView {
 	}
 	showWindow(id, param) {
 		this.getRoot().show();
+		const btnAdd = this.getRoot().queryView({name: "btnWindow"});
+		const window = this.getRoot().queryView({name: "window"});
 		if (id && param) {
 			this.getRoot().queryView({view: "form"}).elements.ContactID.setValue(id);
-			const btnAdd = $$("btnWindow");
 			btnAdd.define("label", "add");
-			btnAdd.refresh();
+			// window.define("head", "add");
 		}
 		else if (id) {
 			this.getRoot().queryView({view: "form"}).setValues(activities.getItem(id));
-			const btnAdd = $$("btnWindow");
 			btnAdd.define("label", "edit");
-			btnAdd.refresh();
+			// window.define("head", "edit");
 		}
+		btnAdd.refresh();
+		window.refresh();
 	}
 	hideWindow() {
 		this.getRoot().queryView({view: "form"}).clear();

@@ -21,7 +21,6 @@ export default class DataViewContact extends JetView {
 			on: {
 				onAfterSelect: (id) => {
 					users.setCursor(id);
-					// this.getRoot().queryView({view: "text"}).clear();
 					this.show(`contacts.contacttemplate?id=${id}`);
 				}
 			}
@@ -62,9 +61,19 @@ export default class DataViewContact extends JetView {
 		$$("filterlist").attachEvent("onTimedKeyPress", function () {
 			let value = this.getValue().toLowerCase();
 			$$("contactlist").filter(function (obj) {
-				let name = obj.FirstName.toLowerCase().indexOf(value) == 0;
-				let email = obj.Email.toLowerCase().indexOf(value) == 0;
-				return name || email;
+				// for (let key in obj) {
+				// 	if (key !== "id") {
+				// 		let info;
+				// 		info = obj[key].toLowerCase().indexOf(value) !== -1;
+				// 		return info;
+				// 	}
+				// }
+				let name = obj.FirstName.toLowerCase().indexOf(value) !== -1;
+				let surname = obj.LastName.toLowerCase().indexOf(value) !== -1;
+				let email = obj.Email.toLowerCase().indexOf(value) !== -1;
+				let company = obj.Company.toLowerCase().indexOf(value) !== -1;
+				let skype = obj.Skype.toLowerCase().indexOf(value) !== -1;
+				return name || email || company || skype || surname;
 			});
 		});
 	}
