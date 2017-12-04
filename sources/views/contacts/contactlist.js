@@ -24,7 +24,8 @@ export default class DataViewContact extends JetView {
 				onAfterSelect: (id) => {
 					users.setCursor(id);
 					this.show(`contacts.contacttemplate?id=${id}`);
-					// $$("filterlist").filter("");
+					this.getRoot().queryView({view: "list"}).filter("");
+					this.getRoot().queryView({view: "text"}).setValue("");
 				}
 			}
 		};
