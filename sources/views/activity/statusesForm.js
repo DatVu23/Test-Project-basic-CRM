@@ -13,31 +13,25 @@ export default class ViewStatusesForm extends JetView {
 			borderless: true,
 			width: 400,
 			elements: [
-				{view: "richselect",
-					label: _("Value"),
-					name: "Value",
-					options: {
-						data: users,
-						body: {template: "#FirstName#"}
-					}},
-				{view: "richselect",
+				{
+					view: "textarea",
+					label: _("Name"),
+					name: "Value"
+				},
+				{
+					view: "textarea",
 					label: _("Icon"),
-					name: "Icon",
-					options: {
-						data: statuses,
-						body: {
-							template: "#Icon#"
-						}
-					}},
-				{view: "checkbox", label: "Complited", name: "State", checkValue: "Close", unCheckValue: "Open"},
+					name: "Icon"
+				},
+				{view: "checkbox", label: _("Complited"), name: "State", checkValue: "Close", unCheckValue: "Open"},
 				{cols: [
 					{view: "button", id: "btnAddStatus", value: _("Add"), click() { this.$scope.saveData(); }},
 					{view: "button", value: _("cancel"), click() { this.$scope.hideWindow(); }}
 				]}
 			],
 			rules: {
-				Value: webix.rules.isNotEmpty
-				// Icon: webix.rules.isNotEmpty
+				Value: webix.rules.isNotEmpty,
+				Icon: webix.rules.isNotEmpty
 			}
 		};
 
@@ -45,7 +39,7 @@ export default class ViewStatusesForm extends JetView {
 			view: "window",
 			position: "center",
 			modal: true,
-			head: "Add(*edit)",
+			head: _("Add"),
 			body: form
 		};
 

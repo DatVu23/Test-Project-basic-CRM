@@ -12,22 +12,16 @@ export default class ViewActivityForm extends JetView {
 			borderless: true,
 			width: 400,
 			elements: [
-				{view: "richselect",
+				{
+					view: "textarea",
 					label: _("Value"),
-					name: "Value",
-					options: {
-						data: activitytypes,
-						body: {template: "#Value#"}
-					}},
-				{view: "richselect",
+					name: "Value"
+				},
+				{
+					view: "textarea",
 					label: _("Icon"),
-					name: "Icon",
-					options: {
-						data: activitytypes,
-						body: {
-							template: "#Icon#"
-						}
-					}},
+					name: "Icon"
+				},
 				{view: "checkbox", label: _("Complited"), name: "State", checkValue: "Close", unCheckValue: "Open"},
 				{cols: [
 					{view: "button", id: "btnAddActivity", value: _("Add"), click() { this.$scope.saveData(); }},

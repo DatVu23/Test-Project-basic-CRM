@@ -24,6 +24,7 @@ export default {
 	add: "Добавление",
 	"First Name": "Имя",
 	"Last Name": "Фамилия",
+	Name: "Имя",
 	"Joining date": "Дата выступления",
 	Job: "Работа",
 	Company: "Компания",
